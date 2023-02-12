@@ -1,7 +1,20 @@
 #include <iostream>
 #include <string>
+#include <vector>
 #include <map>
 #include <iomanip>
+
+int diff_check (int& a, double b) {
+    if (a > b) {
+        return 1;
+    }
+    if (a < b) {
+        return 2;
+    }
+    if (a == b) {
+        return 3;
+    }
+}
 
 int main() {
     std::string name;
@@ -22,20 +35,32 @@ int main() {
     }while (name != "end");
 
     ///Обработка данных.
+    std::vector<std::string> name_birthdayboy;
     std::time_t sec_start = std::mktime(&local);
     int different = difftime(sec_start, std::mktime(&happy_birthday.begin() -> second));
     std::string min_diff_name = "";
-    for (std::map<std::string, std::tm> :: iterator it = happy_birthday.begin(); it != happy_birthday.end(); it++) {
+    for (std::map<std::string, std::tm> :: iterator it = happy_birthday.begin()++; it != happy_birthday.end(); it++) {
             std::time_t sec_hp = std::mktime(&it -> second);
-            if (different < difftime(sec_start, sec_hp)) {
-                min_diff_name += it -> first;
+            switch (diff_check(different, std::difftime(sec_start, sec_hp))) {
+                case 1: {
+                    min_diff_name = it -> first;
+                    different = std::difftime(sec_start, sec_hp);
+                }
+                case 2: {
+                    name_birthdayboy.push_back(it -> first);
+                }
             }
     }
+
+    /// Вывод результата
+        if (!name_birthdayboy.empty()) {
+            std::cout << "Today is the birthday of: ";
+            for (int i = 0; i < name_birthdayboy.size(); i++) {
+                std::cout << name_birthdayboy[i] << " ";
+            }
+        }
+        else {
+            std::cout << "The nearest birthday to: " << min_diff_name;
+        }
         return 0;
 }
-    /*std::map<std::string, std::tm> :: iterator it = happy_birthday.find(name);
-            std::cout << it -> first << " \n";
-            std::cout << std::put_time(&it -> second, "%Y/%m/%d");void diff_time (int& different, std::time_t a, std::time_t b) {
-        different = difftime(a, b);
-    }
-     */
