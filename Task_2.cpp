@@ -49,6 +49,8 @@ int main() {
         for (int i = 0; i < data_birthday.begin() -> second.size(); i++) {
             std::cout << data_birthday.begin() -> second[i] << " ";
         }
+        std::tm happy_day = *localtime(&data_birthday.begin() -> first + happy);
+        std::cout << std::put_time(&happy_day, "%Y/%m/%d");
     }
     return 0;
 }
