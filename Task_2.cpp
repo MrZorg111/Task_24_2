@@ -22,7 +22,8 @@ int main() {
     std::cout << "Date ";
     std::cin >> std::get_time(&local, "%Y/%m/%d");
     tempo = std::mktime(&local);
-    tempo = tempo - happy;
+    tempo = (std::time_t)std::difftime(tempo, happy);
+
     if(tempo < 0) {
         continue;
     }
@@ -32,7 +33,7 @@ int main() {
         } else {
             name_happy.clear();
             name_happy.push_back(name);
-            data_birthday.insert(std::pair<std::time_t, std::vector<std::string>>(tempo, name_happy));
+            data_birthday.insert(std::pair<double, std::vector<std::string>>(tempo, name_happy));
         }
     }
     } while(true);
@@ -49,8 +50,9 @@ int main() {
         for (int i = 0; i < data_birthday.begin() -> second.size(); i++) {
             std::cout << data_birthday.begin() -> second[i] << " ";
         }
-        std::tm happy_day = *localtime(&data_birthday.begin() -> first + happy);
-        std::cout << std::put_time(&happy_day, "%Y/%m/%d");
+        tempo = data_birthday.begin() -> first + happy;
+        std::tm t = *localtime(&tempo);
+        std::cout << std::put_time(&t, "%Y/%m/%d");
     }
     return 0;
 }
