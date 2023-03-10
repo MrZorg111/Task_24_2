@@ -5,10 +5,7 @@
 #include <vector>
 
 bool check_date (std::tm a, std::tm b) {
-    if (a.tm_year < b.tm_year) {
-        return false;
-    }
-    if (a.tm_year <= b.tm_year && a.tm_mon < b.tm_mon) {
+    if (a.tm_mon < b.tm_mon) {
         return false;
     }
     if (a.tm_year <= b.tm_year && a.tm_mon <= b.tm_mon && a.tm_mday < b.tm_mday) {
@@ -35,9 +32,10 @@ int main() {
     std::cout << "Date ";
     std::cin >> std::get_time(&local, "%Y/%m/%d");
     if (!check_date(local, happy_tm)) {
-        std::cout << "Date is incorrect, please try again.\n";
+        std::cout << "Your friend's birthday has already passed!\n";
         continue;
     }
+    local.tm_year = happy_tm.tm_year;
     tempo = std::mktime(&local);
     tempo = (std::time_t)std::difftime(tempo, happy);
 
@@ -68,7 +66,7 @@ int main() {
             }
             tempo = data_birthday.begin()->first + happy;
             std::tm t = *localtime(&tempo);
-            std::cout << std::put_time(&t, "%Y/%m/%d");
+            std::cout << std::put_time(&t, "%m/%d");
         }
     }
     return 0;
